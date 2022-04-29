@@ -20,6 +20,7 @@ let lottery;
 
     let ticket = await lottery.buyTicket({value : 1000000000000000000n}) ;
     await ticket.wait();
+    
   
    })
 
@@ -48,10 +49,10 @@ let lottery;
 
  it("Pick Winner" , async function () {
 
-  let winner = await lottery.pickWinner() ;
-  console.log(acc1.address);
-  console.log(acc2.address);
-  console.log(winner.value);
+  let winner = await lottery.pickWinner();
+
+  let bankOfLottery = await lottery.bankOfLottery();
+  console.log(bankOfLottery);
   
 
  })
