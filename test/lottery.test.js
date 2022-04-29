@@ -56,7 +56,7 @@ let lottery;
 
     
     let ticketMy = await lottery.myTicket() ;
-    expect(ticketMy , "You dont have ticket").to.eq(1);
+    expect(ticketMy > 0 ).to.be.true;
     console.log(ticketMy);
 
     let bankOfLottery = await lottery.bankOfLottery();
@@ -84,6 +84,14 @@ let lottery;
     // check change of balance member2
   let balanceOf2 = await lottery.connect(acc2).balanceOf() ;
   console.log(balanceOf2);
+
+ })
+
+ it("last winner" , async function() {
+
+  let lastWinner = await lottery.lastWinner();
+  console.log(lastWinner);
+
 
  })
 

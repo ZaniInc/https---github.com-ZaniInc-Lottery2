@@ -6,6 +6,7 @@ contract Lottery {
 
     mapping(address => uint)_ticketNumber;
     mapping(address => uint)_balances;
+    address [] private _winners;
 
     address  payable [] private members;
     address payable private owner = payable(msg.sender) ;
@@ -58,17 +59,21 @@ contract Lottery {
     And last we reset members of Lottery.
     Function will start when bank = 10 ether.
     */
-    function pickWinner () public onlyOwner returns(uint) {
+    function pickWinner () public onlyOwner  {
         require(bankOfLottery() > 1 ether);
         sendToOwner();
         uint winner = randomNumber() % members.length;
         members[winner].transfer(address(this).balance);
+        _winners.push(members[winner]);
         members = new address payable[](0);
         numberOfMembers = 0;
-        return winner;
 
     }
 
+
+    function lastWinner () public view returns(address [] memory){
+        return _winners;
+    }
     // Send 10% to contract owner
     function sendToOwner () private {
        
