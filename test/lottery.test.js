@@ -30,7 +30,7 @@ let lottery;
   
    })
 
- it("Check number of ticket + bank of lottery + members of lottery" , async function () {
+ it("Check number of ticket + bank of lottery + members of lotter" , async function () {
 
     
     let ticketMy = await lottery.myTicket() ;
