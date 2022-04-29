@@ -16,11 +16,26 @@ contract Lottery {
         _;
     }
 
+    // CHECK BANK OF LOTTERY
+    function bankOfLottery () public view returns(uint) {
+        return address(this).balance;
+    }
+
+    // CHECK BANK OF LOTTERY
+    function balanceOf () public view returns(uint) {
+        return msg.sender.balance;
+    }
+
+    // CHECK MEMBERS OF LOTTERY
+
+    function membersOfLottery () public view returns (address payable [] memory) {
+        return members;
+    }
+
     // This function we use to check number of lottery ticket
     function myTicket () public view returns (uint) {
         return _ticketNumber[msg.sender];
     }
-
 
    /**
     IMPORTANTS THINKS OF THIS FUNCTION IS ADD NEW MEMBER TO ARRAY
@@ -37,11 +52,6 @@ contract Lottery {
         members.push(payable(msg.sender));
     }
 
-    // This function we use to create random number by creating random hash.
-    function randomNumber () private view returns(uint){
-        address owner_ = msg.sender;
-        return uint (keccak256(abi.encodePacked(owner_ , block.timestamp)));
-    }
    /**
     WE USE RESULT OF FUNCTION randomNumber like random number and after % on length of array.
     After this 90% of balance we transfer to random winner and 10 to owner of contract.
@@ -59,21 +69,16 @@ contract Lottery {
 
     }
 
-    // CHECK BANK OF LOTTERY
-    function bankOfLottery () public view returns(uint) {
-        return address(this).balance;
-    }
-
-    // CHECK MEMBERS OF LOTTERY
-
-    function membersOfLottery () public view returns (address payable [] memory) {
-        return members;
-    }
-
     // Send 10% to contract owner
     function sendToOwner () private {
        
         uint a = 10 * bankOfLottery() / 100;
         owner.transfer(a);
+    }
+
+     // This function we use to create random number by creating random hash.
+    function randomNumber () private view returns(uint){
+        address owner_ = msg.sender;
+        return uint (keccak256(abi.encodePacked(owner_ , block.timestamp)));
     }
 }
