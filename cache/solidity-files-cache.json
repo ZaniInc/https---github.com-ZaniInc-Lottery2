@@ -2,7 +2,7 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/pavel/JavaScriptLearning/contracts/MyLotteryZanozin.sol": {
-      "lastModificationDate": 1651759670445,
+      "lastModificationDate": 1651759821600,
       "contentHash": "a5aca97148f42b89c87de103ce6a1e0c",
       "sourceName": "contracts/MyLotteryZanozin.sol",
       "solcConfig": {
@@ -112,8 +112,8 @@
       ]
     },
     "/Users/pavel/JavaScriptLearning/contracts/ERC721.sol": {
-      "lastModificationDate": 1651759670443,
-      "contentHash": "5b655fcbc42b048924d6c938923a5c32",
+      "lastModificationDate": 1651771941459,
+      "contentHash": "9ebeb8c67fc66cedbe7af6d9372c4e9b",
       "sourceName": "contracts/ERC721.sol",
       "solcConfig": {
         "version": "0.8.7",

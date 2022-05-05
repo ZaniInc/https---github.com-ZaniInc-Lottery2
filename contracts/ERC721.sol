@@ -16,6 +16,9 @@ contract ERC721 is IERC721 {
     // Token symbol
     string private _symbolNFT = "TTN";
 
+    //TokenId
+    uint256 private _tokenId;
+
     uint public nftTotalSupply;
 
     // Mapping from token ID to owner address
@@ -131,16 +134,16 @@ contract ERC721 is IERC721 {
 
     // This function are minting NFTs
     function _mintNFT (address to) internal returns (uint256) {
-        uint256 tokenId;
-        ++tokenId;
+        
+        ++_tokenId;
 
-        require(to != address(0) && tokenId != 0);
+        require(to != address(0) && _tokenId != 0);
         require(_balances[to] <1);
 
-        _balances[to] += tokenId;
-        _owners[tokenId] = to;
+        _balances[to] += _tokenId;
+        _owners[_tokenId] = to;
         nftTotalSupply += 1;
-        return tokenId;
+        return _tokenId;
         
 
     }
