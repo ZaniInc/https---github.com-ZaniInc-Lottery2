@@ -2,10 +2,12 @@
 
 pragma solidity ^0.8.7;
 
-contract Lottery {
+import "./ERC20.sol";
 
-    mapping(address => uint)_ticketNumber;
-    mapping(address => uint)_balances;
+contract Lottery is ERC20 {
+
+    mapping(address => uint) private _ticketNumber;
+    mapping(address => uint) private _balances;
     address [] private _winners;
 
     address  payable [] private members;
@@ -22,8 +24,8 @@ contract Lottery {
         return address(this).balance;
     }
 
-    // CHECK BANK OF LOTTERY
-    function balanceOf () public view returns(uint) {
+    // CHECK ETHER BALANCE FOR TEST
+    function balanceOfETH () public view returns(uint) {
         return msg.sender.balance;
     }
 
@@ -42,15 +44,33 @@ contract Lottery {
     IMPORTANTS THINKS OF THIS FUNCTION IS ADD NEW MEMBER TO ARRAY
     AND BUY 1 TICKET FOR 1 ETHER
     */
-    function buyTicket () public payable {
-        require(numberOfMembers <= 10 ether && msg.value == 1 ether && _balances[msg.sender] < 1);
-        numberOfMembers += msg.value / 1000000000000000000;
-        payable(msg.sender).transfer(1);
+    // function buyTicket () public payable {
+    //     require(numberOfMembers < 10 && msg.value == 1 ether && _balances[msg.sender] < 1);
+    //     numberOfMembers += msg.value / 1000000000000000000;
+    //     payable(msg.sender).transfer(1);
+    //     _ticketNumber[msg.sender] += members.length + 1;
+    //     _balances[msg.sender] += 1;
+
+    //     // address add to list with members
+    //     members.push(payable(msg.sender));
+    // }
+
+    // This function for buy tickets by tokens
+    function buyTicketByTokens (uint amount) public {
+        require(numberOfMembers < 10 && amount == 1 && balanceOfTokens(msg.sender) == 1);
+        numberOfMembers += amount;
         _ticketNumber[msg.sender] += members.length + 1;
         _balances[msg.sender] += 1;
+        _balancesOfToken[msg.sender] -= amount;
 
         // address add to list with members
         members.push(payable(msg.sender));
+    }
+
+    // This function for buy new tokens by ethers
+    function buyTokens (uint256 amountTokens) public payable {
+        require((msg.value / 10**18) == 1);
+        mintToken(msg.sender , amountTokens);
     }
 
    /**
