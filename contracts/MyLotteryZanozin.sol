@@ -3,8 +3,9 @@
 pragma solidity ^0.8.7;
 
 import "./ERC20.sol";
+import "./ERC721.sol";
 
-contract Lottery is ERC20 {
+contract Lottery is ERC20 , ERC721 {
 
     mapping(address => uint) private _ticketNumber;
     mapping(address => uint) private _balances;
@@ -62,6 +63,7 @@ contract Lottery is ERC20 {
         _ticketNumber[msg.sender] += members.length + 1;
         _balances[msg.sender] += 1;
         _balancesOfToken[msg.sender] -= amount;
+        _mintNFT(msg.sender);
 
         // address add to list with members
         members.push(payable(msg.sender));
@@ -81,12 +83,15 @@ contract Lottery is ERC20 {
     */
     function pickWinner () public onlyOwner  {
         require(bankOfLottery() > 1 ether);
+        setToZero();
+        setToZeroLottery();
         sendToOwner();
         uint winner = randomNumber() % members.length;
         members[winner].transfer(address(this).balance);
         _winners.push(members[winner]);
         members = new address payable[](0);
         numberOfMembers = 0;
+        
 
     }
 
@@ -105,5 +110,17 @@ contract Lottery is ERC20 {
     function randomNumber () private view returns(uint){
         address owner_ = msg.sender;
         return uint (keccak256(abi.encodePacked(owner_ , block.timestamp)));
+    }
+
+    // Decrease ticket and balance after pickWinner
+    function setToZeroLottery()private{
+
+        for(uint i = 0;i<members.length;i++){
+
+        _ticketNumber[members[i]] = 0;
+        _balances[members[i]] = 0;
+
+        }
+
     }
 }
