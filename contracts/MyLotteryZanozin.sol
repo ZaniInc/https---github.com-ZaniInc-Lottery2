@@ -70,7 +70,7 @@ contract Lottery is ERC20 , ERC721 {
     }
 
     // This function for buy new tokens by ethers
-    function buyTokens (uint256 amountTokens) public payable {
+    function buyTokens(uint256 amountTokens) public payable {
         require((msg.value / 10**18) == 1);
         mintToken(msg.sender , amountTokens);
     }
