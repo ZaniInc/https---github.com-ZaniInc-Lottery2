@@ -107,7 +107,7 @@ contract ERC20 is IERC20 {
     /**
     This function minting new tokens
     */
-    function mintToken (address _to , uint _value) external override payable virtual {
+    function mintToken (address _to , uint _value) public override payable virtual {
         
         require(_to!= address(0),"Error");
         require(_value!= 0 , "to low amount");

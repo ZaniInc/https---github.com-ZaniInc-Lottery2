@@ -8,49 +8,46 @@ let acc2 , acc3;
 let lottery;
 
  before(async function () {
-    
-    [owner , acc2 , acc3] = await ethers.getSigners();
-    const Lottery = await ethers.getContractFactory("Lottery" , owner);
-    lottery = await Lottery.deploy();
-    await lottery.deployed();
 
     [owner , acc2 , acc3] = await ethers.getSigners();
     const ERC20 = await ethers.getContractFactory("ERC20" , owner);
-    erc20 = await Lottery.deploy();
+    erc20 = await ERC20.deploy();
+    await erc20.deployed();
+    
+    [owner , acc2 , acc3] = await ethers.getSigners();
+    const Lottery = await ethers.getContractFactory("Lottery" , owner);
+    lottery = await Lottery.deploy(erc20.address);
     await lottery.deployed();
     
  });
 
- it("acc2 ether balance before pay" , async function () {
+ 
+ it("MINT ERC20 TOKENS by acc2" , async function () {
 
-    let balanceOf = await lottery.connect(acc2).balanceOfETH() ;
-    console.log("Acc2 balance ETH before pay :",balanceOf);
+    let tokensMint = await erc20.connect(acc2).mintToken(acc2.address , 1 ) ;
+    expect(await erc20.connect(acc2).balanceOfTokens(acc2.address)).to.eq(1);
+    await tokensMint.wait();
     
   
    })
 
- it("Buy ERC20 TOKENS by acc2" , async function () {
+  it("acc2 balance after MINT" , async function () {
 
-    let tokens = await lottery.connect(acc2).buyTokens(1 , {value : ethers.utils.parseEther("1.0")}) ;
-    expect(tokens.value).to.eq(1000000000000000000n);
-    await tokens.wait();
-    
-  
-   })
-
- it("acc2 balance after pay" , async function () {
-
-    let balanceOf = await lottery.connect(acc2).balanceOfETH() ;
-    console.log("Acc2 balance ETH after pay :", balanceOf);
+    let balanceOf = await lottery.connect(acc2).callBalanceOfERC20(acc2.address) ;
+    console.log("Acc2 balance after mint :", balanceOf);
   
    })
   
+  it("acc2 approve transfer for lottery" , async function () {
+
+    let approve = await erc20.connect(acc2).approve(acc2.address , lottery.address , 1) ;
+    expect(await erc20.connect(acc2).allowance(acc2.address , lottery.address) , "Check allowances").to.eq(1);
+  
+  })
+
   it("Buy ticket by ERC20 TOKENS for acc2" , async function () {
 
     
-    let balanceOfTokkens = await lottery.connect(acc2).balanceOfTokens(acc2.address);
-    expect(balanceOfTokkens).to.eq(1);
-    console.log("Acc2 balance of ERC20 tokens :",balanceOfTokkens);
     let ticket = await lottery.connect(acc2).buyTicketByTokens(1);
     
   
@@ -75,24 +72,35 @@ let lottery;
 
   })
 
- it("Buy ERC20 TOKENS for acc3" , async function () {
+  it("MINT ERC20 TOKENS by acc3" , async function () {
 
-    let ticketForMember = await lottery.connect(acc3).buyTokens(1 , {value : ethers.utils.parseEther("1.0")}) ;
-    expect(ticketForMember.value).to.eq(1000000000000000000n);
-    await ticketForMember.wait();
-
-    let balanceOf2 = await lottery.connect(acc3).balanceOfETH() ;
-    console.log("Acc3 balance of ETH :",balanceOf2);
+    let tokensMint = await erc20.connect(acc3).mintToken(acc3.address , 1 ) ;
+    expect(await erc20.connect(acc3).balanceOfTokens(acc3.address)).to.eq(1);
+    await tokensMint.wait();
+    
   
    })
 
-  it("Buy ticket by ERC20 TOKENS by acc3" , async function () {
+  it("acc3 balance after MINT" , async function () {
 
-    let balanceOfTokkens = await lottery.connect(acc3).balanceOfTokens(acc3.address);
-    expect(balanceOfTokkens).to.eq(1);
-    console.log("Acc3 balance of ERC20 tokens :",balanceOfTokkens);
+    let balanceOf = await lottery.connect(acc3).callBalanceOfERC20(acc3.address) ;
+    console.log("Acc2 balance after mint :", balanceOf);
+  
+   })
+  
+  it("acc3 approve transfer for lottery" , async function () {
+
+    let approve = await erc20.connect(acc3).approve(acc3.address , lottery.address , 1) ;
+    expect(await erc20.connect(acc3).allowance(acc3.address , lottery.address) , "Check allowances").to.eq(1);
+  
+  })
+
+  it("Buy ticket by ERC20 TOKENS for acc3" , async function () {
+
+    
     let ticket = await lottery.connect(acc3).buyTicketByTokens(1);
     
+  
   })
 
   it("Check NFT acc3" , async function () {
@@ -105,7 +113,7 @@ let lottery;
 
   })
   
- it("Check number of ticket by member1 + bank of lottery + members of lotter" , async function () {
+ it("Check number of ticket by acc2 + bank of lottery + members of lotter" , async function () {
 
     
     let ticketMy = await lottery.connect(acc2).myTicket() ;
@@ -113,7 +121,7 @@ let lottery;
     console.log("Number of ticket acc2 :",ticketMy);
 
     let bankOfLottery = await lottery.bankOfLottery();
-    expect(bankOfLottery > 1000000000000000000n , "Bank below then 1 ether").to.be.true;
+    expect(bankOfLottery == 2 , "Bank below then 2 tokens").to.be.true;
     console.log("Balance of contract :",bankOfLottery);
 
     let membersOfLottery = await lottery.membersOfLottery();
@@ -123,23 +131,19 @@ let lottery;
 
  it("Pick Winner" , async function () {
   
-    // find winner
+  // find winner
   let winner = await lottery.pickWinner();
   let bankOfLottery = await lottery.bankOfLottery();
 
     // check change of bank
   console.log("Bank balance after lottery :",bankOfLottery);
 
-    // check change of balance contract owner
-  let balanceOf = await lottery.balanceOfETH() ;
-  console.log("ETH balance of owner :",balanceOf);
-
     // check change of balance member2
-  let balanceOf2 = await lottery.connect(acc2).balanceOfETH() ;
-  console.log("ETH balance of member1 :",balanceOf2);
+  let balanceOf2 = await erc20.connect(acc2).balanceOfTokens(acc2.address) ;
+  console.log("ERC20 balance of member1 :",balanceOf2);
     // check change of balance member3
-  let balanceOf3 = await lottery.connect(acc3).balanceOfETH() ;
-  console.log("ETH balance of member2 :",balanceOf3);
+  let balanceOf3 = await erc20.connect(acc3).balanceOfTokens(acc3.address) ;
+  console.log("ERC20 balance of member2 :",balanceOf3);
 
  })
 
