@@ -13,6 +13,11 @@ let lottery;
     const Lottery = await ethers.getContractFactory("Lottery" , owner);
     lottery = await Lottery.deploy();
     await lottery.deployed();
+
+    [owner , acc2 , acc3] = await ethers.getSigners();
+    const ERC20 = await ethers.getContractFactory("ERC20" , owner);
+    erc20 = await Lottery.deploy();
+    await lottery.deployed();
     
  });
 

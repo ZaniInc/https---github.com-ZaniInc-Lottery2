@@ -16,6 +16,8 @@ interface IERC20 {
 
     function allowance(address owner, address spender) external view returns (uint256);
 
+    function mintToken(address to , uint256 amount) external payable;
+
 
 
 

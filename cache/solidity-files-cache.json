@@ -1,47 +1,9 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/pavel/JavaScriptLearning/contracts/MyLotteryZanozin.sol": {
-      "lastModificationDate": 1651759821600,
-      "contentHash": "a5aca97148f42b89c87de103ce6a1e0c",
-      "sourceName": "contracts/MyLotteryZanozin.sol",
-      "solcConfig": {
-        "version": "0.8.7",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./ERC20.sol",
-        "./ERC721.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.7"
-      ],
-      "artifacts": [
-        "Lottery"
-      ]
-    },
     "/Users/pavel/JavaScriptLearning/contracts/ERC20.sol": {
-      "lastModificationDate": 1651759670443,
-      "contentHash": "7c935f27547c867a92320142b28a1830",
+      "lastModificationDate": 1652139137207,
+      "contentHash": "d109ca1ba42b50f4256e5acbe716c4a8",
       "sourceName": "contracts/ERC20.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -77,8 +39,8 @@
       ]
     },
     "/Users/pavel/JavaScriptLearning/contracts/IERC20.sol": {
-      "lastModificationDate": 1651736830453,
-      "contentHash": "1a2eb480c3ed50df2cb2270aaed1fbee",
+      "lastModificationDate": 1652138708818,
+      "contentHash": "88d1de0ba75fcebac6562af612d85f37",
       "sourceName": "contracts/IERC20.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -109,6 +71,44 @@
       ],
       "artifacts": [
         "IERC20"
+      ]
+    },
+    "/Users/pavel/JavaScriptLearning/contracts/MyLotteryZanozin.sol": {
+      "lastModificationDate": 1652139026059,
+      "contentHash": "1f650f2f7b3ee0d387bb6d0a2a5b0279",
+      "sourceName": "contracts/MyLotteryZanozin.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./ERC721.sol",
+        "./IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.7"
+      ],
+      "artifacts": [
+        "Lottery"
       ]
     },
     "/Users/pavel/JavaScriptLearning/contracts/ERC721.sol": {

@@ -6,8 +6,7 @@ import "./IERC20.sol";
 
 contract ERC20 is IERC20 {
 
-    mapping(address => uint256) internal _balancesOfToken;
-
+    mapping(address => uint256) private _balancesOfToken;
     mapping(address => mapping(address => uint256)) private _allowances;
 
     uint256 private _totalSupply;
@@ -108,13 +107,18 @@ contract ERC20 is IERC20 {
     /**
     This function minting new tokens
     */
-    function mintToken (address _to , uint _value) internal virtual {
+    function mintToken (address _to , uint _value) external override payable virtual {
+        
+        require(_to!= address(0),"Error");
+        require(_value!= 0 , "to low amount");
+       _mintToken(_to,_value);
+    }
 
-         require(_to!= address(0),"Error");
-         require(_value!= 0 , "to low amount");
+    function _mintToken (address _to , uint _value) private  {
+
          _balancesOfToken[_to] += _value;
          _totalSupply += _value;
-     }
+    }
 
 
 }
